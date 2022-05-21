@@ -16,6 +16,8 @@ public class ScoreManager : MonoBehaviour
         wallLeftBc = GameObject.FindGameObjectWithTag("WallLeft").GetComponent<BoxCollider2D>();
         wallRightBc = GameObject.FindGameObjectWithTag("WallRight").GetComponent<BoxCollider2D>();
 
+        player1ScoreInt = 0;
+        player2ScoreInt = 0;
         player1Score.text = "0";
         player2Score.text = "0";
     }
