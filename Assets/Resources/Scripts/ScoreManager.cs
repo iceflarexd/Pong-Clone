@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,8 +6,7 @@ public class ScoreManager : MonoBehaviour
 {
     public bool isFirstTick = true;
     public Text player1Score, player2Score, winningPlayer;
-    public static int player1ScoreFinal, player2ScoreFinal;
-    public int player1ScoreInt, player2ScoreInt;
+    public static int player1ScoreInt, player2ScoreInt;
     BoxCollider2D ballBc, wallLeftBc, wallRightBc;
 
     // Start is called before the first frame update
@@ -30,6 +27,7 @@ public class ScoreManager : MonoBehaviour
         {
             if (CollisionManager.HasPlayer1Scored(ballBc, wallRightBc))
             {
+                GameObject.FindGameObjectWithTag("Goal").GetComponent<SoundManager>().PlaySound();
                 isFirstTick = false;
                 player1ScoreInt++;
                 player1Score.text = player1ScoreInt.ToString();
@@ -38,6 +36,7 @@ public class ScoreManager : MonoBehaviour
 
             if (CollisionManager.HasPlayer2Scored(ballBc, wallLeftBc))
             {
+                GameObject.FindGameObjectWithTag("Goal").GetComponent<SoundManager>().PlaySound();
                 isFirstTick = false;
                 player2ScoreInt++;
                 player2Score.text = player2ScoreInt.ToString();
@@ -48,24 +47,13 @@ public class ScoreManager : MonoBehaviour
         if (!ballBc.IsTouching(wallLeftBc) && !ballBc.IsTouching(wallRightBc))
             isFirstTick = true;
 
-        if (player1ScoreInt == 5)
-        {
-            player1ScoreFinal = player1ScoreInt;
-            player2ScoreFinal = player2ScoreInt;
+        if (player1ScoreInt == 5 || player2ScoreInt == 5)
             SceneManager.LoadScene(2);
-        }
-
-        if (player2ScoreInt == 5)
-        {
-            player1ScoreFinal = player1ScoreInt;
-            player2ScoreFinal = player2ScoreInt;
-            SceneManager.LoadScene(2);
-        }
     }
 
-    public static int GetWinningPlayer(int player1Score, int player2Score) 
+    public static int GetWinningPlayer() 
     { 
-        if (player1Score > player2Score) return 1;
+        if (player1ScoreInt > player2ScoreInt) return 1;
         return 2;
     }
 }

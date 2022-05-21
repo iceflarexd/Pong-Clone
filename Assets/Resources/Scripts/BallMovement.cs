@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BallMovement : MonoBehaviour
@@ -10,18 +8,25 @@ public class BallMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        float posY = Random.Range(-150, 150);
-        ball = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody2D>();
-        transform.localPosition = new Vector2(-19, posY);
-        vel.x = 250;
-        vel.y = -150;
-        ball.velocity = vel;
-        GameStateManager.PlayerScored += Start;
+        GameStateManager.PlayerScored += OnPlayerScored;
+        OnPlayerScored();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnPlayerScored()
     {
+        ball = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody2D>();
 
+        float posY = Random.Range(-150, 150);
+        transform.localPosition = new Vector2(-19, posY);
+        vel.y = posY * 1.5f;
+
+        int startingSide = Random.Range(1, 3);
+        if (startingSide == 1) vel.x = -250;
+        else vel.x = 250;
+
+        ball.velocity = vel;
     }
+
+    private void OnDestroy()
+        => GameStateManager.PlayerScored -= OnPlayerScored;
 }
